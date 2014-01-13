@@ -64,14 +64,9 @@
     <!-- services integrated within this business process                  -->
     <!-- ================================================================= -->         
     <bpel:sequence name="main">
-        
         <!-- Receive input from requester. 
              Note: This maps to operation defined in TravelAgency.wsdl 
-             -->
-        <bpel:receive name="receiveInput" partnerLink="client"
-                 portType="tns:TravelAgency"
-                 operation="process" variable="input"
-                 createInstance="yes"/>   
+             --><bpel:receive name="receiveInput" partnerLink="client" portType="tns:TravelAgency" operation="process" variable="input" createInstance="yes" />   
 
 		<bpel:assign name="doXslTranform1">
                   <bpel:copy>
@@ -128,7 +123,16 @@
 		           </bpel:copy>
         </bpel:assign>                               
         
-        <bpel:invoke name="InvokeFlightTicketService" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns:FlightTicketPortType" inputVariable="FlightTicketPLRequest" outputVariable="FlightTicketPLResponse"></bpel:invoke>
+        <bpel:flow name="Flow"><bpel:sequence name="BookingFlight">
+                <bpel:assign validate="no" name="assignRequestFlight">
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate"></bpel:from>
+                        <bpel:to variable="FlightTicketPLRequest"></bpel:to>
+                    </bpel:copy>
+                </bpel:assign>
+                <bpel:invoke name="InvokeFlightTicketService" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns:FlightTicketPortType" inputVariable="FlightTicketPLRequest" outputVariable="FlightTicketPLResponse"></bpel:invoke>
+            </bpel:sequence><bpel:sequence name="BookingHotel"></bpel:sequence></bpel:flow>
+        
         <bpel:assign validate="no" name="AssignShippingInputVariable">
             <bpel:copy>
                 <bpel:from>
@@ -144,7 +148,7 @@
             
         </bpel:assign>
         
-        <bpel:invoke name="InvokeShippingWS" partnerLink="ShipperWS" portType="sns:ShippingWSPortType" operation="shipping" inputVariable="shippingInput" outputVariable="shippingOutput"/>
+        <bpel:invoke name="InvokeShippingWS" partnerLink="ShipperWS" portType="sns:ShippingWSPortType" operation="shipping" inputVariable="shippingInput" outputVariable="shippingOutput" />
         
         <bpel:assign validate="no" name="AssignOutput">
             <bpel:copy>
@@ -200,13 +204,10 @@
             </bpel:copy>
         </bpel:assign>        
         
-        <bpel:reply name="replyOutput" 
-               partnerLink="client"
-               portType="tns:TravelAgency"
-               operation="process" 
-               variable="output"
-               />
+        <bpel:reply name="replyOutput" partnerLink="client" portType="tns:TravelAgency" operation="process" variable="output" />
                                 
+    
+    
     </bpel:sequence>
 </bpel:process>
 
