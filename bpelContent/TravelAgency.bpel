@@ -64,10 +64,10 @@
         <bpel:variable name="HotelReservationPLRequest1" messageType="ns:getAvailableRoomsRequest"></bpel:variable>
         <bpel:variable name="AreFlightsAvailable" type="ns1:boolean"></bpel:variable>
         <bpel:variable name="IsHotelBookingFailed" type="ns1:boolean"></bpel:variable>
-        <bpel:variable name="FlightTicketPLResponse" messageType="ns0:getFlightInfoResponse"></bpel:variable>
-        <bpel:variable name="FlightTicketPLRequest1" messageType="ns0:getFlightInfoRequest"></bpel:variable>
-        <bpel:variable name="FlightTicketPLResponse1" messageType="ns0:getFlightInfoResponse"></bpel:variable>
-        <bpel:variable name="FlightTicketPLRequest" messageType="ns0:getFlightInfoRequest"></bpel:variable>
+        <bpel:variable name="FlightTicketPLDepartureResponse" messageType="ns0:getFlightInfoResponse"></bpel:variable>
+        <bpel:variable name="FlightTicketPLReturnRequest" messageType="ns0:getFlightInfoRequest"></bpel:variable>
+        <bpel:variable name="FlightTicketPLReturnResponse" messageType="ns0:getFlightInfoResponse"></bpel:variable>
+        <bpel:variable name="FlightTicketPLDepartureRequest" messageType="ns0:getFlightInfoRequest"></bpel:variable>
         
         
         
@@ -353,7 +353,7 @@
                         <bpel:from part="payload" variable="input">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:departurecity]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest">
+                        <bpel:to part="parameters" variable="FlightTicketPLDepartureRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:departure]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -361,7 +361,7 @@
                         <bpel:from part="payload" variable="input">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:destinationcity]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest">
+                        <bpel:to part="parameters" variable="FlightTicketPLDepartureRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:destination]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -371,7 +371,7 @@
                                 <![CDATA[tns:date]]>
                             </bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest">
+                        <bpel:to part="parameters" variable="FlightTicketPLDepartureRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:date]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -381,7 +381,7 @@
                                 <![CDATA[tns:month]]>
                             </bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest">
+                        <bpel:to part="parameters" variable="FlightTicketPLDepartureRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
                                 <![CDATA[ns0:date/ftd:month]]>
                             </bpel:query>
@@ -391,7 +391,7 @@
                         <bpel:from part="payload" variable="inputDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest">
+                        <bpel:to part="parameters" variable="FlightTicketPLDepartureRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:year]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -399,7 +399,7 @@
                         <bpel:from part="payload" variable="input">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:departurecity]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest1">
+                        <bpel:to part="parameters" variable="FlightTicketPLReturnRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:departure]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -407,7 +407,7 @@
                         <bpel:from part="payload" variable="input">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:destinationcity]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest1">
+                        <bpel:to part="parameters" variable="FlightTicketPLReturnRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:destination]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -415,7 +415,7 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest1">
+                        <bpel:to part="parameters" variable="FlightTicketPLReturnRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:date]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -423,7 +423,7 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest1">
+                        <bpel:to part="parameters" variable="FlightTicketPLReturnRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:month]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -431,15 +431,99 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="FlightTicketPLRequest1">
+                        <bpel:to part="parameters" variable="FlightTicketPLReturnRequest">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:year]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
                 </bpel:assign>
-                <bpel:invoke name="InvokeAvailableDeparture" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLRequest" outputVariable="FlightTicketPLResponse"></bpel:invoke>
-                <bpel:invoke name="InvokeAvailableReturn" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLRequest1" outputVariable="FlightTicketPLResponse1"></bpel:invoke>
+                <bpel:invoke name="InvokeAvailableDeparture" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLDepartureRequest" outputVariable="FlightTicketPLDepartureResponse"></bpel:invoke>
+                <bpel:invoke name="InvokeAvailableReturn" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLReturnRequest" outputVariable="FlightTicketPLReturnResponse"></bpel:invoke>
                 
                 
+                <bpel:assign validate="no" name="AssignInfoToBookings">
+                    <bpel:copy>
+                        <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:flightNo]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:flightNumber]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:seats]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:seats]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:date]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:month]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:year]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to variable="BookFlightTicketReturnPLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:date]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to variable="BookFlightTicketReturnPLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:month]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="payload" variable="inputDate">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to variable="BookFlightTicketReturnPLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:year]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:flightNo]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to variable="BookFlightTicketReturnPLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                <![CDATA[ns0:flightNumber]]>
+                            </bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:seats]]></bpel:query>
+                        </bpel:from>
+                        <bpel:to variable="BookFlightTicketReturnPLRequest">
+                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:seats]]></bpel:query>
+                        </bpel:to>
+                    </bpel:copy>
+                </bpel:assign>
                 <bpel:invoke name="InvokeBookFlightDeparture" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketDeparturePLRequest" outputVariable="BookFlightTicketDeparturePLResponse"></bpel:invoke>
                 <bpel:invoke name="InvokeBookeFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketReturnPLRequest" outputVariable="BookFlightTicketReturnPLResponse"></bpel:invoke>
                 
@@ -458,7 +542,7 @@
                         <bpel:sequence name="BookingFlightSeq">
                             <bpel:assign validate="no" name="Assign3">
                                 <bpel:copy>
-                                    <bpel:from part="parameters" variable="FlightTicketPLResponse">
+                                    <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
                                         <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:flightNo]]></bpel:query>
                                     </bpel:from>
                                     <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
@@ -467,7 +551,7 @@
                                 </bpel:copy>
                                 
                                 <bpel:copy>
-                                    <bpel:from part="parameters" variable="FlightTicketPLResponse">
+                                    <bpel:from part="parameters" variable="FlightTicketPLDepartureResponse">
                                         <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:seats]]></bpel:query>
                                     </bpel:from>
                                     <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
