@@ -10,7 +10,7 @@
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://FlightTicket.Milestone1.SC13Project" location="FlightTicket.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import location="TravelAgencyArtifacts.wsdl" namespace="http://TravelAgency.Milestone3.SC13Project/" 
-	        importType="http://schemas.xmlsoap.org/wsdl/" />
+            importType="http://schemas.xmlsoap.org/wsdl/" />
     
     <!-- Import the ShippingWS WSDL --> 
     <bpel:import importType="http://schemas.xmlsoap.org/wsdl/"
@@ -31,6 +31,7 @@
               
         <bpel:partnerLink name="HotelReservationPL" partnerLinkType="tns:HotelReservationLT" partnerRole="HotelReservationRN"></bpel:partnerLink>
         <bpel:partnerLink name="FlightTicketPL" partnerLinkType="tns:FlightTicketLT" partnerRole="FlightTicketRN"></bpel:partnerLink>
+        
     </bpel:partnerLinks>
   
     <!-- ================================================================= -->         
@@ -61,7 +62,7 @@
         <bpel:variable name="HotelReservationPLRequest" messageType="ns:bookRoomRequest"></bpel:variable>
         <bpel:variable name="HotelReservationPLResponse1" messageType="ns:getAvailableRoomsResponse"></bpel:variable>
         <bpel:variable name="HotelReservationPLRequest1" messageType="ns:getAvailableRoomsRequest"></bpel:variable>
-        <bpel:variable name="IsFlightAvailable" type="ns1:boolean"></bpel:variable>
+        <bpel:variable name="AreFlightsAvailable" type="ns1:boolean"></bpel:variable>
         <bpel:variable name="IsHotelBookingFailed" type="ns1:boolean"></bpel:variable>
         <bpel:variable name="FlightTicketPLResponse" messageType="ns0:getFlightInfoResponse"></bpel:variable>
         <bpel:variable name="FlightTicketPLRequest1" messageType="ns0:getFlightInfoRequest"></bpel:variable>
@@ -82,13 +83,18 @@
             </bpel:from>
         </bpel:variable>
         
-        
-        
         <bpel:variable name="HotelAvailRoomsPLResponse" messageType="ns:getAvailableRoomsResponse"></bpel:variable>
         <bpel:variable name="HotelAvailRoomsPLRequest" messageType="ns:getAvailableRoomsRequest"></bpel:variable>
         <bpel:variable name="ResponsePayload" element="tns:TravelAgencyResponse"></bpel:variable>
         <bpel:variable name="HotelBookRoomPLResponse" messageType="ns:bookRoomResponse"></bpel:variable>
         <bpel:variable name="HotelBookRoomPLRequest" messageType="ns:bookRoomRequest"></bpel:variable>
+
+        <bpel:variable name="BookFlightTicketDeparturePLResponse" messageType="ns0:bookFlightResponse"></bpel:variable>
+        <bpel:variable name="BookFlightTicketDeparturePLRequest" messageType="ns0:bookFlightRequest"></bpel:variable>
+        <bpel:variable name="BookFlightTicketReturnPLRequest" element="ns0:bookFlight"></bpel:variable>
+        <bpel:variable name="BookFlightTicketReturnPLResponse" element="ns0:bookFlightResponse"></bpel:variable>
+        <bpel:variable name="FlightUnAvailableException" type="ftd:FlightUnAvailableException"></bpel:variable>
+
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -205,7 +211,7 @@
         <bpel:flow name="Flow"><bpel:sequence name="HotelBookingSequence">
                 
                 
-                <bpel:assign validate="no" name="AssignAvailableRoomsInput"><bpel:copy>
+                <bpel:assign validate="no" name="AssignToHotelRequest"><bpel:copy>
                         <bpel:from part="payload" variable="inputDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
                         </bpel:from>
@@ -259,6 +265,7 @@
                         </bpel:to>
                     </bpel:copy>
                 </bpel:assign>
+<<<<<<< HEAD
                 <bpel:invoke name="InvokeAvailableRooms" partnerLink="HotelReservationPL" operation="getAvailableRooms" portType="ns:HotelReservationPortType" inputVariable="HotelAvailRoomsPLRequest" outputVariable="HotelAvailRoomsPLResponse"></bpel:invoke>
                 <bpel:if name="If_room_available">
                     <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelAvailRoomsPLResponse.count("//") > 0]]></bpel:condition>
@@ -278,17 +285,17 @@
                             
                         </bpel:assign>
                     </bpel:sequence>
-                   	<bpel:else>
-                   		<bpel:sequence name="NoExceptionSequence">
+                    <bpel:else>
+                        <bpel:sequence name="NoExceptionSequence">
                             <bpel:assign validate="no" name="Assign1">
-                            	<bpel:copy><bpel:from>
+                                <bpel:copy><bpel:from>
                                         <bpel:literal xml:space="preserve">true</bpel:literal>
                                     </bpel:from>
                                     <bpel:to variable="IsHotelBookingFailed"></bpel:to>
                                 
                                 </bpel:copy>
                             </bpel:assign>
-					</bpel:sequence>
+                    </bpel:sequence>
                     </bpel:else>
                 </bpel:if>
                 <bpel:assign validate="yes" name="AssignDemoResult">
@@ -318,6 +325,7 @@
                 <bpel:if name="if_book_exception">
                     <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[1=1]]></bpel:condition>
                     <bpel:sequence name="ExceptionSequence">
+
                         
                         <bpel:assign validate="no" name="Assign">
                             <bpel:copy>
@@ -340,7 +348,7 @@
                     </bpel:else>
                 </bpel:if>
             </bpel:sequence><bpel:sequence name="FlightBookingSequence">
-                <bpel:assign validate="no" name="AssignAvailableFlightInput1">
+                <bpel:assign validate="no" name="AssignToFlightRequest">
                     <bpel:copy>
                         <bpel:from part="payload" variable="input">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:departurecity]]></bpel:query>
@@ -430,20 +438,68 @@
                 </bpel:assign>
                 <bpel:invoke name="InvokeAvailableDeparture" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLRequest" outputVariable="FlightTicketPLResponse"></bpel:invoke>
                 <bpel:invoke name="InvokeAvailableReturn" partnerLink="FlightTicketPL" operation="getFlightInfo" portType="ns0:FlightTicketPortType" inputVariable="FlightTicketPLRequest1" outputVariable="FlightTicketPLResponse1"></bpel:invoke>
-                <bpel:if name="If_flight_ex">
-                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[$FlightTicketResponse1.FlightTicketFlightUnAvailableException=FlightUnAvailableException OR $FlightTicketResponse.FlightTicketFlightUnAvailableException=FlightUnAvailableException]]></bpel:condition>
-                    <bpel:sequence name="FlightExceptionSequence">
+                
+                
+                <bpel:invoke name="InvokeBookFlightDeparture" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketDeparturePLRequest" outputVariable="BookFlightTicketDeparturePLResponse"></bpel:invoke>
+                <bpel:invoke name="InvokeBookeFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketReturnPLRequest" outputVariable="BookFlightTicketReturnPLResponse"></bpel:invoke>
+                
+                <bpel:if name="If_flights_unavailable">
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[1=1]]></bpel:condition>
+                    <bpel:sequence name="FlightsUnavailableSeq">
                         <bpel:assign validate="no" name="AssignFlightAvailException">
                             <bpel:copy>
-                                <bpel:from variable="IsFlightAvailable"></bpel:from>
+                                <bpel:from variable="AreFlightsAvailable"></bpel:from>
                                 <bpel:to variable="false"></bpel:to>
                             </bpel:copy>
                         </bpel:assign>
                     </bpel:sequence>
                     <bpel:else>
-                        <bpel:sequence name="NoFlightExceptionSequence">
+
+                        <bpel:sequence name="BookingFlightSeq">
+                            <bpel:assign validate="no" name="Assign3">
+                                <bpel:copy>
+                                    <bpel:from part="parameters" variable="FlightTicketPLResponse">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:flightNo]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:flightNumber]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                
+                                <bpel:copy>
+                                    <bpel:from part="parameters" variable="FlightTicketPLResponse">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:return[1]/ftd:seats]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:seats]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from part="payload" variable="inputDate">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:date]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from part="payload" variable="inputDate">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:month]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from part="payload" variable="inputDate">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="BookFlightTicketDeparturePLRequest">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns0:date/ftd:year]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                            </bpel:assign>
                             
-                            <bpel:assign validate="no" name="Assign3"></bpel:assign>
                         </bpel:sequence>
                     </bpel:else>
                 </bpel:if>
