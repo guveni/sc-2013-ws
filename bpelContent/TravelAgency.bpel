@@ -81,6 +81,14 @@
                 <bpel:literal xml:space="preserve">true</bpel:literal>
             </bpel:from>
         </bpel:variable>
+        
+        
+        
+        <bpel:variable name="HotelAvailRoomsPLResponse" messageType="ns:getAvailableRoomsResponse"></bpel:variable>
+        <bpel:variable name="HotelAvailRoomsPLRequest" messageType="ns:getAvailableRoomsRequest"></bpel:variable>
+        <bpel:variable name="ResponsePayload" element="tns:TravelAgencyResponse"></bpel:variable>
+        <bpel:variable name="HotelBookRoomPLResponse" messageType="ns:bookRoomResponse"></bpel:variable>
+        <bpel:variable name="HotelBookRoomPLRequest" messageType="ns:bookRoomRequest"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -98,6 +106,31 @@
                  operation="process" variable="input"
                  createInstance="yes"/>   
 
+        <bpel:assign validate="yes" name="AssignTestData">
+            
+            <bpel:copy>
+                <bpel:from>
+                    <bpel:literal xml:space="preserve"><ns:bookRoom xmlns:ns="http://HotelReservation.Milestone1.SC13Project" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns:type>ns:type</ns:type>
+  <ns:amount>0</ns:amount>
+  <ns:period>
+    <checkin>
+      <date>10</date>
+      <month>10</month>
+      <year>2014</year>
+    </checkin>
+    <checkout>
+      <date>12</date>
+      <month>10</month>
+      <year>2014</year>
+    </checkout>
+  </ns:period>
+</ns:bookRoom>
+</bpel:literal>
+                </bpel:from>
+                <bpel:to variable="HotelReservationPLRequest"></bpel:to>
+            </bpel:copy>
+        </bpel:assign>
         <bpel:assign name="doXslTranform1">
                   <bpel:copy>
                       <bpel:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
@@ -226,9 +259,64 @@
                         </bpel:to>
                     </bpel:copy>
                 </bpel:assign>
-                <bpel:invoke name="InvokeAvailableRooms" partnerLink="HotelReservationPL" operation="getAvailableRooms" portType="ns:HotelReservationPortType" inputVariable="HotelReservationPLRequest1" outputVariable="HotelReservationPLResponse1"></bpel:invoke>
-                <bpel:if name="if_hotel_ex">
-                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[$HotelReservationPLResponse1.HotelReservationUnAvailableException=HotelReservationUnAvailableException]]></bpel:condition>
+                <bpel:invoke name="InvokeAvailableRooms" partnerLink="HotelReservationPL" operation="getAvailableRooms" portType="ns:HotelReservationPortType" inputVariable="HotelAvailRoomsPLRequest" outputVariable="HotelAvailRoomsPLResponse"></bpel:invoke>
+                <bpel:if name="If_room_available">
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelAvailRoomsPLResponse.count("//") > 0]]></bpel:condition>
+                    <bpel:sequence name="BookRoomSequence">
+                        <bpel:invoke name="InvokeBookRoom" partnerLink="HotelReservationPL" operation="bookRoom" inputVariable="HotelBookRoomPLRequest" outputVariable="HotelBookRoomPLResponse"></bpel:invoke>
+                        <bpel:empty name="Empty"></bpel:empty>
+                        
+                        <bpel:assign validate="yes" name="AssignBookingResults">
+                            
+                            <bpel:copy>
+                                <bpel:from>
+                                    <bpel:literal xml:space="preserve">false</bpel:literal>
+                                </bpel:from>
+                                <bpel:to variable="IsHotelBookingFailed"></bpel:to>
+                            </bpel:copy>
+                            
+                            
+                        </bpel:assign>
+                    </bpel:sequence>
+                   	<bpel:else>
+                   		<bpel:sequence name="NoExceptionSequence">
+                            <bpel:assign validate="no" name="Assign1">
+                            	<bpel:copy><bpel:from>
+                                        <bpel:literal xml:space="preserve">true</bpel:literal>
+                                    </bpel:from>
+                                    <bpel:to variable="IsHotelBookingFailed"></bpel:to>
+                                
+                                </bpel:copy>
+                            </bpel:assign>
+					</bpel:sequence>
+                    </bpel:else>
+                </bpel:if>
+                <bpel:assign validate="yes" name="AssignDemoResult">
+                    <bpel:copy>
+                        <bpel:from><bpel:literal xml:space="preserve"><tns:TravelAgencyResponse xmlns:tns="http://TravelAgency.Milestone3.SC13Project/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:successful>true</tns:successful>
+  <tns:itinerary>
+    <tns:departFlightNo>123</tns:departFlightNo>
+    <tns:returnFligthNo>321</tns:returnFligthNo>
+    <tns:hotelBookingID>123</tns:hotelBookingID>
+  </tns:itinerary>
+  <tns:shippingID>123</tns:shippingID>
+  <tns:date>1</tns:date>
+  <tns:month>1</tns:month>
+  <tns:year>1980</tns:year>
+</tns:TravelAgencyResponse>
+</bpel:literal></bpel:from>
+                        <bpel:to variable="ResponsePayload"></bpel:to>
+                    </bpel:copy>
+                    
+                </bpel:assign>
+                <bpel:reply name="Reply" partnerLink="client" operation="process" portType="tns:TravelAgency"><bpel:toParts>
+                                <bpel:toPart part="payload" fromVariable="ResponsePayload"></bpel:toPart>
+                            </bpel:toParts>
+                        
+                </bpel:reply>
+                <bpel:if name="if_book_exception">
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelReserverationResponse.]]></bpel:condition>
                     <bpel:sequence name="ExceptionSequence">
                         
                         <bpel:assign validate="no" name="Assign">
@@ -240,13 +328,11 @@
                     </bpel:sequence>
                     <bpel:else>
                         <bpel:sequence name="NoExceptionSequence">
-                            
-                            
-                            <bpel:assign validate="no" name="Assign1">
-                                <bpel:copy><bpel:from variable="IsHotelBookingFailed"></bpel:from>
+                            <bpel:assign validate="no" name="Assign1"><bpel:copy><bpel:from variable="IsHotelBookingFailed"></bpel:from>
                                     <bpel:to variable="false"></bpel:to>
                                 
                                 </bpel:copy>
+                            
                             
                             
                             </bpel:assign>
@@ -356,6 +442,7 @@
                     </bpel:sequence>
                     <bpel:else>
                         <bpel:sequence name="NoFlightExceptionSequence">
+                            
                             <bpel:assign validate="no" name="Assign3"></bpel:assign>
                         </bpel:sequence>
                     </bpel:else>
