@@ -381,30 +381,6 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.0"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.1"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.2"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.3"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.4"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
-  </extensions>
-  <extensions>
     <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@activity"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
@@ -458,6 +434,26 @@
   </extensions>
   <extensions>
     <extendedObject href="TravelAgency.bpel#/"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1389711178000"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1389717105000"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.6/@else/@activity/@activities.0/@copy.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.4/@faultHandler/@catch.0/@activity/@activities.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.4/@faultHandler/@catch.0/@activity/@activities.1"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="TravelAgency.bpel#//@activity/@activities.3/@activities.1/@activities.4/@faultHandler/@catch.0/@activity"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
 </extensionmodel:ExtensionMap>
