@@ -316,7 +316,7 @@
                         
                 </bpel:reply>
                 <bpel:if name="if_book_exception">
-                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelReserverationResponse.]]></bpel:condition>
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[1=1]]></bpel:condition>
                     <bpel:sequence name="ExceptionSequence">
                         
                         <bpel:assign validate="no" name="Assign">
