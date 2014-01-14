@@ -510,16 +510,16 @@
                     </bpel:copy>
                 </bpel:assign>
                 <bpel:invoke name="InvokeBookFlightDeparture" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketDeparturePLRequest" outputVariable="BookFlightTicketDeparturePLResponse"><bpel:catch faultName="ns0:FlightTicketFlightUnAvailableException"><bpel:sequence><bpel:compensate></bpel:compensate><bpel:rethrow></bpel:rethrow></bpel:sequence></bpel:catch></bpel:invoke>
-                <bpel:invoke name="InvokeBookeFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketReturnPLRequest" outputVariable="BookFlightTicketReturnPLResponse"></bpel:invoke>
+                <bpel:invoke name="InvokeBookFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketReturnPLRequest" outputVariable="BookFlightTicketReturnPLResponse"></bpel:invoke>
                 
                 <bpel:if name="If_flights_unavailable">
-                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[$AreFlightsAvailable == >]]></bpel:condition>
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[1=1]]></bpel:condition>
                     <bpel:sequence name="FlightsUnavailableSeq">
                         <bpel:assign validate="no" name="AssignFlightAvailException">
                             <bpel:copy>
                                 <bpel:from variable="AreFlightsAvailable"></bpel:from>
                                 <bpel:to variable="false"></bpel:to>
-                            </bpel:copy>
+                            </bpel:copy> 
                         </bpel:assign>
                     </bpel:sequence>
                     <bpel:else>
