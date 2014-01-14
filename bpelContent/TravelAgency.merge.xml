@@ -8,10 +8,9 @@
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://HotelReservation.Milestone1.SC13Project" xmlns:xsd="http://HotelReservation.Milestone1.SC13Project/xsd" xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://FlightTicket.Milestone1.SC13Project" xmlns:ftd="http://FlightTicket.Milestone1.SC13Project/xsd">
 
     <!-- Import the client WSDL -->
-    <bpel:import namespace="http://HotelReservation.Milestone1.SC13Project" location="HotelReservation.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://FlightTicket.Milestone1.SC13Project" location="FlightTicket.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import location="TravelAgencyArtifacts.wsdl" namespace="http://TravelAgency.Milestone3.SC13Project/" 
-            importType="http://schemas.xmlsoap.org/wsdl/" />
+	        importType="http://schemas.xmlsoap.org/wsdl/" />
     
     <!-- Import the ShippingWS WSDL --> 
     <bpel:import importType="http://schemas.xmlsoap.org/wsdl/"
@@ -59,10 +58,10 @@
         <bpel:variable name="inputDate" 
                   messageType="tns:InputDateMessage" />
                             
-        
-        
-        
-        
+        <bpel:variable name="HotelReservationPLResponse" messageType="ns:bookRoomResponse"></bpel:variable>
+        <bpel:variable name="HotelReservationPLRequest" messageType="ns:bookRoomRequest"></bpel:variable>
+        <bpel:variable name="HotelReservationPLResponse1" messageType="ns:getAvailableRoomsResponse"></bpel:variable>
+        <bpel:variable name="HotelReservationPLRequest1" messageType="ns:getAvailableRoomsRequest"></bpel:variable>
         <bpel:variable name="AreFlightsAvailable" type="ns1:boolean"></bpel:variable>
         <bpel:variable name="IsHotelBookingFailed" type="ns1:boolean"></bpel:variable>
         <bpel:variable name="FlightTicketPLResponse" messageType="ns0:getFlightInfoResponse"></bpel:variable>
@@ -122,20 +121,20 @@
   <ns:amount>0</ns:amount>
   <ns:period>
     <checkin>
-      <date>1</date>
-      <month>1</month>
+      <date>10</date>
+      <month>10</month>
       <year>2014</year>
     </checkin>
     <checkout>
-      <date>2</date>
-      <month>2</month>
+      <date>12</date>
+      <month>10</month>
       <year>2014</year>
     </checkout>
   </ns:period>
 </ns:bookRoom>
 </bpel:literal>
                 </bpel:from>
-                <bpel:to variable="HotelBookRoomPLRequest"></bpel:to>
+                <bpel:to variable="HotelReservationPLRequest"></bpel:to>
             </bpel:copy>
         </bpel:assign>
         <bpel:assign name="doXslTranform1">
@@ -212,46 +211,22 @@
         <bpel:flow name="Flow"><bpel:sequence name="HotelBookingSequence">
                 
                 
-                <bpel:assign validate="yes" name="AssignToHotelRequest">
-                
-                    
-                    
-                    
-                    
-                    
-                    <bpel:copy>
-                        <bpel:from><bpel:literal xml:space="preserve"><ns:getAvailableRooms xmlns:ns="http://HotelReservation.Milestone1.SC13Project" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns:period>
-    <checkin>
-      <date>1</date>
-      <month>1</month>
-      <year>2013</year>
-    </checkin>
-    <checkout>
-      <date>2</date>
-      <month>2</month>
-      <year>2013</year>
-    </checkout>
-  </ns:period>
-</ns:getAvailableRooms>
-</bpel:literal></bpel:from>
-                        <bpel:to variable="HotelAvailRoomsPLRequest" part="parameters"></bpel:to>
-                    </bpel:copy>
-                    <bpel:copy>
+                <bpel:assign validate="no" name="AssignToHotelRequest"><bpel:copy>
                         <bpel:from part="payload" variable="inputDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
                                 <![CDATA[ns:period/xsd:checkin/xsd:date]]>
                             </bpel:query>
                         </bpel:to>
                     </bpel:copy>
+                
                     <bpel:copy>
                         <bpel:from part="payload" variable="inputDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
                                 <![CDATA[ns:period/xsd:checkin/xsd:month]]>
                             </bpel:query>
@@ -261,7 +236,7 @@
                         <bpel:from part="payload" variable="inputDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns:period/xsd:checkin/xsd:year]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -269,7 +244,7 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:date]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns:period/xsd:checkout/xsd:date]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -277,7 +252,7 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:month]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns:period/xsd:checkout/xsd:month]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
@@ -285,12 +260,12 @@
                         <bpel:from part="payload" variable="returnDate">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:year]]></bpel:query>
                         </bpel:from>
-                        <bpel:to part="parameters" variable="HotelAvailRoomsPLRequest">
+                        <bpel:to part="parameters" variable="HotelReservationPLRequest1">
                             <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns:period/xsd:checkout/xsd:year]]></bpel:query>
                         </bpel:to>
                     </bpel:copy>
                 </bpel:assign>
-
+<<<<<<< HEAD
                 <bpel:invoke name="InvokeAvailableRooms" partnerLink="HotelReservationPL" operation="getAvailableRooms" portType="ns:HotelReservationPortType" inputVariable="HotelAvailRoomsPLRequest" outputVariable="HotelAvailRoomsPLResponse"></bpel:invoke>
                 <bpel:if name="If_room_available">
                     <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelAvailRoomsPLResponse.count("//") > 0]]></bpel:condition>
@@ -310,17 +285,17 @@
                             
                         </bpel:assign>
                     </bpel:sequence>
-                    <bpel:else>
-                        <bpel:sequence name="NoExceptionSequence">
+                   	<bpel:else>
+                   		<bpel:sequence name="NoExceptionSequence">
                             <bpel:assign validate="no" name="Assign1">
-                                <bpel:copy><bpel:from>
+                            	<bpel:copy><bpel:from>
                                         <bpel:literal xml:space="preserve">true</bpel:literal>
                                     </bpel:from>
                                     <bpel:to variable="IsHotelBookingFailed"></bpel:to>
                                 
                                 </bpel:copy>
                             </bpel:assign>
-                    </bpel:sequence>
+					</bpel:sequence>
                     </bpel:else>
                 </bpel:if>
                 <bpel:assign validate="yes" name="AssignDemoResult">
@@ -341,12 +316,6 @@
                         <bpel:to variable="ResponsePayload"></bpel:to>
                     </bpel:copy>
                     
-                    <bpel:copy>
-                        <bpel:from variable="IsHotelBookingFailed"></bpel:from>
-                        <bpel:to variable="ResponsePayload">
-                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:successful]]></bpel:query>
-                        </bpel:to>
-                    </bpel:copy>
                 </bpel:assign>
                 <bpel:reply name="Reply" partnerLink="client" operation="process" portType="tns:TravelAgency"><bpel:toParts>
                                 <bpel:toPart part="payload" fromVariable="ResponsePayload"></bpel:toPart>
