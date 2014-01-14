@@ -5,7 +5,12 @@
          suppressJoinFailure="yes"
          xmlns:tns="http://TravelAgency.Milestone3.SC13Project/"
          xmlns:sns="http://Shipping.Milestone1.SC12Project" 
-         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://HotelReservation.Milestone1.SC13Project" xmlns:xsd="http://HotelReservation.Milestone1.SC13Project/xsd" xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://FlightTicket.Milestone1.SC13Project" xmlns:ftd="http://FlightTicket.Milestone1.SC13Project/xsd">
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" 
+         xmlns:ns="http://HotelReservation.Milestone1.SC13Project" 
+         xmlns:xsd="http://HotelReservation.Milestone1.SC13Project/xsd" 
+         xmlns:ns1="http://www.w3.org/2001/XMLSchema" 
+         xmlns:ns0="http://FlightTicket.Milestone1.SC13Project" 
+         xmlns:ftd="http://FlightTicket.Milestone1.SC13Project/xsd">
 
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://HotelReservation.Milestone1.SC13Project" location="HotelReservation.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
@@ -92,10 +97,9 @@
 
         <bpel:variable name="BookFlightTicketDeparturePLResponse" messageType="ns0:bookFlightResponse"></bpel:variable>
         <bpel:variable name="BookFlightTicketDeparturePLRequest" messageType="ns0:bookFlightRequest"></bpel:variable>
-        <bpel:variable name="BookFlightTicketReturnPLRequest" element="ns0:bookFlight"></bpel:variable>
-        <bpel:variable name="BookFlightTicketReturnPLResponse" element="ns0:bookFlightResponse"></bpel:variable>
-        <bpel:variable name="FlightUnAvailableException" type="ftd:FlightUnAvailableException"></bpel:variable>
-
+        
+        <bpel:variable name="BookFlightTicketReturnPLResponse" messageType="ns0:bookFlightResponse"></bpel:variable>
+        <bpel:variable name="BookFlightTicketReturnPLRequest" messageType="ns0:bookFlightRequest"></bpel:variable>
     </bpel:variables>
 
     <!-- ================================================================= -->         
@@ -510,7 +514,7 @@
                     </bpel:copy>
                 </bpel:assign>
                 <bpel:invoke name="InvokeBookFlightDeparture" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketDeparturePLRequest" outputVariable="BookFlightTicketDeparturePLResponse"><bpel:catch faultName="ns0:FlightTicketFlightUnAvailableException"><bpel:sequence><bpel:compensate></bpel:compensate><bpel:rethrow></bpel:rethrow></bpel:sequence></bpel:catch></bpel:invoke>
-                <bpel:invoke name="InvokeBookFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" inputVariable="BookFlightTicketReturnPLRequest" outputVariable="BookFlightTicketReturnPLResponse"></bpel:invoke>
+                <bpel:invoke name="InvokeBookFlightReturn" partnerLink="FlightTicketPL" operation="bookFlight" portType="ns0:FlightTicketPortType" outputVariable="BookFlightTicketReturnPLResponse" inputVariable="BookFlightTicketReturnPLRequest"><bpel:catch><bpel:sequence><bpel:compensate></bpel:compensate><bpel:rethrow></bpel:rethrow></bpel:sequence></bpel:catch></bpel:invoke>
                 
                 <bpel:if name="If_flights_unavailable">
                     <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[1=1]]></bpel:condition>
