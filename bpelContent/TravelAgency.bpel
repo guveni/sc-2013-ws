@@ -252,7 +252,7 @@
 
                 <bpel:invoke name="InvokeAvailableRooms" partnerLink="HotelReservationPL" operation="getAvailableRooms" portType="ns:HotelReservationPortType" inputVariable="HotelAvailRoomsPLRequest" outputVariable="HotelAvailRoomsPLResponse"></bpel:invoke>
                 <bpel:if name="If_room_available">
-                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[HotelAvailRoomsPLResponse.count("//") > 0]]></bpel:condition>
+                    <bpel:condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[count($HotelAvailRoomsPLResponse.parameters) > 0]]></bpel:condition>
                     <bpel:sequence name="BookRoomSequence">
                         <bpel:invoke name="InvokeBookRoom" partnerLink="HotelReservationPL" operation="bookRoom" inputVariable="HotelBookRoomPLRequest" outputVariable="HotelBookRoomPLResponse"></bpel:invoke>
                         <bpel:empty name="Empty"></bpel:empty>
